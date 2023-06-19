@@ -1,32 +1,33 @@
-//const helloWorld = React.createElement('h1', {}, 'Hello world!');
+const LastName = ({ children, classList }) => {
+    return (
+        <span className={classList}>{ children }</span>
+    )
+}
 
-const firstName = 'r0ulito';
-const lastName = 'formateur';
+const FirstName = ({ children }) => {
+    return (
+        <span>{ children }</span>
+    )
+}
 
+const HelloWorld = ({ firstName, lastName }) => {
+    const formatFirstName = (value) => value[0].toUpperCase() + value.slice(1)
+    const formatLastName = (value) => value.toUpperCase()
 
-// Solution sans bonus
-const helloWorld = <h1>Hello <span>{firstName[0].toUpperCase() + firstName.slice(1)}</span> <span className="red-text">{lastName.toUpperCase()}</span></h1>;
+    return (
+        <h1>
+            Hello <FirstName>{formatFirstName(firstName)}</FirstName> <LastName classList='red-text'>{formatLastName(lastName)}</LastName>
+            
+        </h1>
+    )
+}
 
+const App = () => {
+    return (
+        <React.Fragment>  
+            <HelloWorld firstName='jean' lastName='dujardin' />
+        </React.Fragment>
+    )
+}
 
-
-/**
- * 
- * Solution avec bonus
- */
-
-/*
- const formatFirstName = (value) => value[0].toUpperCase() + value.slice(1);
-
- const formatLastName = (value) => value.toUpperCase();
- 
- // Solution avec bonus
- const helloWorld = (
-   <h1>
-     Hello <span>{formatFirstName(firstName)}</span>{" "}
-     <span className="red-text">{formatLastName(lastName)}</span>
-   </h1>
- );
-
- */
-
-ReactDOM.render(helloWorld, document.querySelector('#app'));
+ReactDOM.render(<App />, document.querySelector('#app'))
