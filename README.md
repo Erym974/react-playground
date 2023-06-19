@@ -10,11 +10,3 @@ En vous aidant de la documentation installez l'environnement de développement `
 ---
 
 Pour passer à la suite vous devez commit vos changements puis checkout sur la branche exo12
-
-
-
-
-
-
-
-
