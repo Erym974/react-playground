@@ -1,37 +1,78 @@
-const firstName = 'r0ulito';
-const lastName = 'formateur';
-
 function FirstName(props) {
-
-    /*
-    // Solution avec bonus
     const formatFirstName = (firstName) => {
-        return firstName[0].toUpperCase() + firstName.substr(1);
+        return firstName[0].toUpperCase() + firstName.substr(1)
     }
 
     return <span>{formatFirstName(props.text)}</span>
-    */
-
-    // Solution sans bonus
-    return <span>{props.text[0].toUpperCase() + props.text.substr(1)}</span>
 }
 
 function LastName(props) {
 
-    /*
-    // Solution avec bonus
     const formatLastName = (lastName) => {
-        return lastName.toUpperCase();
+        return lastName.toUpperCase()
     }
 
-    return <span>{formatLastName(props.text)}</span>
-    */
-
-    // Solution sans bonus
-    return <span className="red-text">{props.text.toUpperCase()}</span>
-
+    return <span className="red-text">{formatLastName(props.text)}</span>
 }
 
-const helloWorld = <h1>Hello <FirstName text={firstName}/> <LastName text={lastName}/></h1>;
+const HelloWorld = ({ firstname, lastname }) => {
+    return (
+        <h1>Hello <FirstName text={firstname}/> <LastName text={lastname}/></h1>
+    )
+}
 
-ReactDOM.render(helloWorld, document.querySelector('#app'));
+// const Clock = () => {
+//     const [date, setDate] = React.useState(new Date().toLocaleTimeString())
+
+//     setTimeout(() => {
+//         const time = new Date();
+//         setDate(time.toLocaleTimeString())
+//     }, 1000)
+
+//     return (
+//         <span>Il est actuellement : <strong>{date}</strong></span>
+//     )
+// }
+
+class Clock extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            date: new Date().toLocaleTimeString()
+        }
+    }
+
+    componentDidMount() {
+        this.timerID = setInterval(() => {
+            this.tick()
+        }, 1000)
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.timerID)
+    }
+
+    tick() {
+        const time = new Date();
+        this.setState({
+            date: time.toLocaleTimeString()
+        })
+    }
+
+    render() {
+        return (
+            <span>Il est actuellement : <strong>{this.state.date}</strong></span>
+        )
+    }
+}
+
+const App = () => {
+    return (
+        <React.Fragment>
+            <HelloWorld firstname="jean" lastname="dujardin" />
+            <Clock />
+        </React.Fragment>
+    )
+}
+
+ReactDOM.render(<App />, document.querySelector('#app'))
