@@ -1,39 +1,60 @@
-function UserGreeting(props) {
-    return <h1>Bienvenue !</h1>;
-  }
-  
-  function GuestGreeting(props) {
-    return <h1>Veuillez vous connecter</h1>;
-  }
-  function Greeting(props) {
-      const [isLoggedIn, setIsLoggedIn] = React.useState(false);
 
-      const handleLogIn = (e) => {
-          e.preventDefault();
-          setIsLoggedIn(true);
-      }
 
-      const handleLogOut = (e) => {
-          e.preventDefault();
-          setIsLoggedIn(false);
-      }
+
+const Card = ({user}) => {
+    return(
+        <div>
+            <h2>{user.name}</h2>
+            <p>{user.email}</p>
+            <p>{user.company.name}</p>
+            <p>{user.phone}</p>
+            <p>{user.website}</p>
+        </div>
+    )
+}
+
+const Users = () => {
+
+    const [users, setUsers] = React.useState([]) 
+    const [user, setUser] = React.useState(null)
+
+    React.useEffect(() => {
+
+        (async () => {
+            const usersData = await fetch('https://jsonplaceholder.typicode.com/users')
+            const users = await usersData.json()
+            setUsers(users)
+            console.log(users)
+        })()
+        
+    }, [])
+
+    const showCard = (id) => { 
+        const user = users.find(user => user.id === id)
+        setUser(user)
+    }
 
     return(
-        <React.Fragment>
-            {isLoggedIn ? 
-            <React.Fragment>
-                <UserGreeting />
-                <button onClick={handleLogOut}>Se déconnecter</button>
-            </React.Fragment> : 
-            <React.Fragment>
-                <GuestGreeting />
-                <button onClick={handleLogIn}>Se connecter</button>
-            </React.Fragment> }
-        </React.Fragment>
+        <div>
+            <h1>Liste des utilistaurs : </h1>
+            <ul>
+                {users.map(user => (
+                    <li key={user.id}>
+                        <span>{user.name}</span>
+                        <button onClick={() => {showCard(user.id)}}>Voir la fiche</button>
+                    </li>
+                ))}
+            </ul>
+            {user && <Card user={user} />}
+        </div>
     )
-  }
-  
-  ReactDOM.render(
-    <Greeting />,
-    document.querySelector('#app')
-  );
+
+}
+
+const App = () => {
+    return(
+        <Users />
+    )
+}
+
+ReactDOM.render(<App />, document.querySelector('#app'))
